@@ -51,5 +51,6 @@ jobs:
           echo "email = wintvelt@me.com" >> .npmrc
           echo "always-auth = true" >> .npmrc
           echo "access=public" >> .npmrc
+          echo "unsafe-perm = true" >> ~/.npmrc
           cat .npmrc
           npm publish
