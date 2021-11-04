@@ -48,5 +48,5 @@ jobs:
           echo "registry = https://registry.npmjs.com/" >> .npmrc
           echo "_auth = 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" >> .npmrc
           echo "email = wintvelt@me.com" >> .npmrc
-          echo "always_auth = true" >> .npmrc
+          echo "always-auth = true" >> .npmrc
           npm publish
