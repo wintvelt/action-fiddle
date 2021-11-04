@@ -48,12 +48,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
         run: |
           cd npm
-        # touch .npmrc
-        # echo "registry = //registry.npmjs.org/:authToken=${{ env.NPM_TOKEN }}" >> .npmrc
-        # echo "username = wintvelt" >> .npmrc
-        # echo "_auth = ${{ env.NPM_TOKEN }}" >> .npmrc
-        # echo "email = wintvelt@me.com" >> .npmrc
-        # echo "always-auth = true" >> .npmrc
-        # echo "access=public" >> .npmrc
-        # echo "unsafe-perm = true" >> .npmrc
+          touch .npmrc
+          echo "registry = //registry.npmjs.org/:authToken=${{ env.NPM_TOKEN }}" >> .npmrc
           npm publish
