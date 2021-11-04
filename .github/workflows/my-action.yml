@@ -13,7 +13,7 @@ jobs:
           node-version: '16'
       - name: check if npm folder exists
         run: |
-          if test -f "${{ env.NPM_FOLDER }}"; then
+          if test -e "${{ env.NPM_FOLDER }}"; then
             echo "npm folder exists."
           else
             ls
