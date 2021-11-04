@@ -14,18 +14,11 @@ jobs:
       - name: check if npm folder exists
         run: |
           if test -e "${{ env.NPM_FOLDER }}"; then
-            echo "npm folder exists."
+            echo "NPM_EXISTS=true" >> $GITHUB_ENV
+            echo "npm folder exists"
           else
-            ls
+            echo "NPM_EXISTS=false" >> $GITHUB_ENV
+            echo "no npm folder here"
           fi
-      - name: fiddles
-        run: |
-          if ${SOMEVAR} == true; then
-            echo "myflag=true" >> $GITHUB_ENV
-            echo "flag set to true"
-          else
-            echo "myflag=false" >> $GITHUB_ENV
-            echo "flag set to false"
-          fi
-      - name: next
-        run: echo "the flag is ${{ env.myflag }}"
+      - name: reading new env var only in a next step
+        run: echo "the flag is ${{ env.NPM_EXISTS }}"
