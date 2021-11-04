@@ -43,7 +43,7 @@ jobs:
             fi
           fi
       - name: bump npm patch version and publish
-        if: env.NPM_EXISTS
+        if: (env.NPM_EXISTS && env.DEPLOY)
         env:
           NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
         run: |
