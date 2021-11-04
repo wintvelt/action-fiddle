@@ -43,6 +43,8 @@ jobs:
           fi
       - name: conditional run
         if: env.NPM_EXISTS
+        env:
+          NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
         run: |
           cd npm
           touch .npmrc
