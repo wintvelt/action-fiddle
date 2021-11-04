@@ -19,4 +19,5 @@ jobs:
             echo "myflag=false" >> $GITHUB_ENV
             echo "flag set to false"
           fi
-          echo "the flag is ${{ env.myflag }}"
+      - name: next
+        run: echo "the flag is ${{ env.myflag }}"
