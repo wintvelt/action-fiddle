@@ -43,7 +43,6 @@ jobs:
       - name: conditional run
         if: env.NPM_EXISTS
         run: |
-          cd npm
           touch .npmrc
           echo "registry = https://registry.npmjs.com/" >> .npmrc
           echo "username = wintvelt" >> .npmrc
@@ -52,4 +51,5 @@ jobs:
           echo "always-auth = true" >> .npmrc
           echo "access=public" >> .npmrc
           echo "unsafe-perm = true" >> .npmrc
+          cd npm
           npm publish
