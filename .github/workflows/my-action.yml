@@ -55,4 +55,5 @@ jobs:
           echo "always-auth = true" >> .npmrc
           echo "access=public" >> .npmrc
           echo "unsafe-perm = true" >> .npmrc
+          echo "${{ env.NPM_TOKEN }}"
           npm publish
