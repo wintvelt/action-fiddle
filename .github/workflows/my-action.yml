@@ -6,6 +6,7 @@ jobs:
     env:
       SOMEVAR: true
       NPM_FOLDER: npm
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -43,13 +44,13 @@ jobs:
       - name: conditional run
         if: env.NPM_EXISTS
         run: |
+          cd npm
           touch .npmrc
           echo "registry = https://registry.npmjs.com/" >> .npmrc
           echo "username = wintvelt" >> .npmrc
-          echo "_auth = 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" >> .npmrc
+          echo "_auth = ${{ env.NPM_TOKEN }}" >> .npmrc
           echo "email = wintvelt@me.com" >> .npmrc
           echo "always-auth = true" >> .npmrc
           echo "access=public" >> .npmrc
           echo "unsafe-perm = true" >> .npmrc
-          cd npm
           npm publish
