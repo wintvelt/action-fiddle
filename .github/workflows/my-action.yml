@@ -44,5 +44,5 @@ jobs:
         run: |
           echo ${{ env.DEPLOY }}
       - name: conditional run
-        if: env.DEPLOY == true
+        if: env.DEPLOY == 'true'
         run: echo "it is true"
