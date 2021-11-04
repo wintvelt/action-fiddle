@@ -13,10 +13,10 @@ jobs:
       - name: fiddles
         run: |
           if ${SOMEVAR} == true; then
-            echo "NPM_FLAG=true" >> $GITHUB_ENV
+            echo "myflag=true" >> $GITHUB_ENV
             echo "flag set to true"
           else
-            echo "NPM_FLAG=false" >> $GITHUB_ENV
+            echo "myflag=false" >> $GITHUB_ENV
             echo "flag set to false"
           fi
-          echo "the flag is $NPM_FLAG"
+          echo "the flag is ${{ env.myflag }}"
