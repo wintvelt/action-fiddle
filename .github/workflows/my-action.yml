@@ -45,6 +45,6 @@ jobs:
         run: |
           cd npm
           touch .npmrc
-          echo "_auth = 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" > .npmrc
+          echo "_auth = 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" >> .npmrc
           echo "email = wintvelt@me.com" >> .npmrc
           npm publish
