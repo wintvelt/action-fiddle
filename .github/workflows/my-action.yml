@@ -26,10 +26,20 @@ jobs:
         run: |
           if [[ ${{ github.ref }} =~ '/dev' ]]; then
             echo "we are on DEV branch"
+            echo "DEPLOY=true" >> $GITHUB_ENV
+            echo "STAGE=dev" >> $GITHUB_ENV
+            echo "PUBLISH_ENDPOINT=${{ env.DEV_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
           else 
             if [[ ${{ github.ref }} =~ '/master' ]]; then
               echo "we are on MASTER branch"
+              echo "DEPLOY=true" >> $GITHUB_ENV
+              echo "STAGE=prod" >> $GITHUB_ENV
+              echo "PUBLISH_ENDPOINT=${{ env.PROD_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
             else
               echo "we are on another branch"
+              echo "DEPLOY=false" >> $GITHUB_ENV
             fi
           fi
+      - name: conditional run
+        if: env.DEPLOY == true
+        run: echo "it is true"
