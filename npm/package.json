@@ -1,6 +1,6 @@
 {
   "name": "my-test-dummy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Testing if I can publish to npm",
   "main": "dummy.js",
   "scripts": {
