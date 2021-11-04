@@ -12,6 +12,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
+          registry-url: https://registry.npmjs.org/
       - name: check if npm folder exists
         run: |
           if test -e "${{ env.NPM_FOLDER }}"; then
@@ -47,8 +48,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
         run: |
           cd npm
-          touch .npmrc
-          echo "registry = //registry.npmjs.org/:authToken=${{ env.NPM_TOKEN }}" >> .npmrc
+        # touch .npmrc
+        # echo "registry = //registry.npmjs.org/:authToken=${{ env.NPM_TOKEN }}" >> .npmrc
         # echo "username = wintvelt" >> .npmrc
         # echo "_auth = ${{ env.NPM_TOKEN }}" >> .npmrc
         # echo "email = wintvelt@me.com" >> .npmrc
