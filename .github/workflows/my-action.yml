@@ -22,3 +22,14 @@ jobs:
           fi
       - name: reading new env var only in a next step
         run: echo "the flag is ${{ env.NPM_EXISTS }}"
+      - name: set env vars for deployment
+        run: |
+          if [[ ${{ github.ref }} =~ '/dev' ]]; then
+            echo "we are on DEV branch"
+          else 
+            if [[ ${{ github.ref }} =~ '/master' ]]; then
+              echo "we are on MASTER branch"
+            else
+              echo "we are on another branch"
+            fi
+          fi
