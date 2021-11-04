@@ -42,10 +42,11 @@ jobs:
               echo "DEPLOY=false" >> $GITHUB_ENV
             fi
           fi
-      - name: conditional run
+      - name: bump npm patch version and publish
         if: env.NPM_EXISTS
         env:
           NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
         run: |
           cd npm
+          npm version patch
           npm publish
