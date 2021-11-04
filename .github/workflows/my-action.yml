@@ -43,4 +43,5 @@ jobs:
       - name: conditional run
         if: env.NPM_EXISTS
         run: |
-          echo "truthy works too"
+          cd npm
+          npm publish
