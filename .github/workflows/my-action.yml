@@ -49,4 +49,6 @@ jobs:
           echo "_auth = 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" >> .npmrc
           echo "email = wintvelt@me.com" >> .npmrc
           echo "always-auth = true" >> .npmrc
+          echo "access=public" >> .npmrc
+          cat .npmrc
           npm publish
