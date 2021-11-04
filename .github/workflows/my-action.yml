@@ -40,9 +40,7 @@ jobs:
               echo "DEPLOY=false" >> $GITHUB_ENV
             fi
           fi
-      - name: check vars
-        run: |
-          echo ${{ env.DEPLOY }}
       - name: conditional run
-        if: env.DEPLOY == 'true'
-        run: echo "it is true"
+        if: env.NPM_EXISTS
+        run: |
+          echo "truthy works too"

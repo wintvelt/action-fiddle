@@ -1,0 +1,14 @@
+{
+  "name": "my-test-dummy",
+  "version": "1.0.0",
+  "description": "Testing if I can publish to npm",
+  "main": "dummy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "wintvelt",
+  "license": "ISC"
+}
