@@ -19,4 +19,4 @@ jobs:
             echo "NPM_FLAG=false" >> $GITHUB_ENV
             echo "flag set to false"
           fi
-          echo "the flag is ${{ env.NPM_FLAG }}"
+          echo "the flag is $NPM_FLAG"
