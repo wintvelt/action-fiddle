@@ -46,6 +46,7 @@ jobs:
           cd npm
           touch .npmrc
           echo "registry = https://registry.npmjs.com/" >> .npmrc
+          echo "username = wintvelt" >> .npmrc
           echo "_auth = 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" >> .npmrc
           echo "email = wintvelt@me.com" >> .npmrc
           echo "always-auth = true" >> .npmrc
