@@ -50,7 +50,7 @@ jobs:
             git checkout -b $BRANCH-workflow-auto-hotfix
           fi
           git branch
-      - name: PRINT stuff
+      - name: PRINT stuff out
         run: |
           STAGE=${{ steps.localenv.outputs.STAGE }}
           echo ${{ steps.npm.outputs.EXISTS }}
