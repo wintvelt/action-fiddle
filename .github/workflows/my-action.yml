@@ -96,9 +96,9 @@ jobs:
         with:
           source_branch: ${{ steps.branch.outputs.HOTFIX_BRANCH }}
           destination_branch: ${{ steps.commit.outputs.BRANCH }}
-          pr_title: "Pulling ${{ steps.branch.outputs.HOTFIX_BRANCH }} into ${{ steps.branch.outputs.BRANCH }}"
-          pr_body: ":crown: *An automated PR*"              # Full markdown support, requires pr_title to be set
-          pr_label: "auto-pr"                               # Comma-separated list (no spaces)
-          pr_draft: true                                    # Creates pull request as draft
+          pr_title: "Add stack output to npm folder for ${{ steps.branch.outputs.BRANCH }} branch"
+          pr_body: ":crown: *An automated PR*"
+          pr_label: "auto-pr"
+          pr_draft: false
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
