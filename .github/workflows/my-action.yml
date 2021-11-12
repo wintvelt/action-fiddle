@@ -74,7 +74,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ${{ steps.commit.outputs.BRANCH }}
       - name: Create pull request
         if: steps.commit.outputs.PUSH == 'true'
         uses: repo-sync/pull-request@v2
