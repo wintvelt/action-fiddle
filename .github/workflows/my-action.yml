@@ -40,14 +40,16 @@ jobs:
         id: branch
         run: |
           BRANCH=$(git branch --show-current)
+          HOTFIX_BRANCH=$BRANCH-workflow-auto-hotfix
           echo "::set-output name=BRANCH::$BRANCH"
+          echo "::set-output name=HOTFIX_BRANCH::$HOTFIX_BRANCH"
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
-          if git show-ref --quiet refs/heads/$BRANCH-workflow-auto-hotfix; then
-            git checkout $BRANCH-workflow-auto-hotfix
+          if git show-ref --quiet refs/heads/$HOTFIX_BRANCH; then
+            git checkout $HOTFIX_BRANCH
             git merge $BRANCH -m "auto merge from deploy workflow"
           else
-            git checkout -b $BRANCH-workflow-auto-hotfix
+            git checkout -b $HOTFIX_BRANCH
           fi
           git branch
       - name: PRINT stuff out
@@ -56,7 +58,7 @@ jobs:
           echo ${{ steps.npm.outputs.EXISTS }}
           echo $STAGE
           echo $(basename -s .git $(git remote get-url origin))
-          echo ${{ github.ref }}
+          echo ${{ steps.branch.outputs.HOTFIX_BRANCH }}
       - name: Add all changes and check if we need to commit files
         id: commit
         shell: bash
@@ -74,4 +76,15 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.commit.outputs.BRANCH }}
+          branch: ${{ steps.branch.outputs.HOTIFX_BRANCH }}
+      - name: Create pull request
+        if: steps.commit.outputs.PUSH == 'true'
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: ${{ steps.commit.outputs.BRANCH }}
+          pr_title: "Pulling ${{ steps.branch.outputs.HOTFIX_BRANCH }} into ${{ steps.branch.outputs.BRANCH }}"
+          pr_body: ":crown: *An automated PR*"              # Full markdown support, requires pr_title to be set
+          pr_label: "auto-pr"                               # Comma-separated list (no spaces)
+          pr_draft: true                                    # Creates pull request as draft
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
