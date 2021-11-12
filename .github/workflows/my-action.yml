@@ -77,7 +77,7 @@ jobs:
         shell: bash
         run: |
           git add --all
-          if [-z "$(git status --porcelain)"]; then
+          if [[ -z "$(git status --porcelain)" ]]; then
             echo "nothing changed"
             echo "::set-output name=PUSH::false"
           else
