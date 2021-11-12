@@ -1,5 +1,11 @@
 name: fiddle
-on: [push]
+on: 
+  push:
+    branches:
+      - master
+      - dev
+    paths-ignore:
+      - 'npm/*-stack-output.json'
 jobs:
   fiddle-job:
     runs-on: ubuntu-latest
@@ -70,7 +76,7 @@ jobs:
         id: commit
         shell: bash
         run: |
-          echo "dinges" >> myfile.txt
+          echo "dinges" >> npm/dev-stack-output.json
           git add --all
           if [-z "$(git status --porcelain)"]; then
             echo "::set-output name=PUSH::false"
