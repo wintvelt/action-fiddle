@@ -49,12 +49,14 @@ jobs:
           else
             git checkout -b $BRANCH-workflow-auto-hotfix
           fi
+          git branch
       - name: PRINT stuff
         run: |
           STAGE=${{ steps.localenv.outputs.STAGE }}
           echo ${{ steps.npm.outputs.EXISTS }}
           echo $STAGE
           echo $(basename -s .git $(git remote get-url origin))
+          git branch
       - name: Add all changes and check if we need to commit files
         id: commit
         shell: bash
