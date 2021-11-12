@@ -83,7 +83,7 @@ jobs:
             git commit -m "auto push from workflow run"
             echo "::set-output name=PUSH::true"
           fi
-      - name: Push changes
+      - name: Push changes out
         if: steps.commit.outputs.PUSH == 'true'
         uses: ad-m/github-push-action@master
         with:
