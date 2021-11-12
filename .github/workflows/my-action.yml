@@ -76,7 +76,6 @@ jobs:
         id: commit
         shell: bash
         run: |
-          echo "dinges" >> npm/${{ steps.localenv.outputs.STAGE }}-stack-output.json
           git add --all
           if [-z "$(git status --porcelain)"]; then
             echo "::set-output name=PUSH::false"
