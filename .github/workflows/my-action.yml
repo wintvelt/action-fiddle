@@ -75,13 +75,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ steps.commit.outputs.BRANCH }}
-      - name: Create pull request
-        if: steps.commit.outputs.PUSH == 'true'
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: ${{ steps.commit.outputs.BRANCH }}
-          pr_title: "Pulling ${{ github.ref }} into ${{ steps.branch.outputs.BRANCH }}"
-          pr_body: ":crown: *An automated PR*"              # Full markdown support, requires pr_title to be set
-          pr_label: "auto-pr"                               # Comma-separated list (no spaces)
-          pr_draft: true                                    # Creates pull request as draft
-          github_token: ${{ secrets.GITHUB_TOKEN }}
