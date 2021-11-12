@@ -78,8 +78,10 @@ jobs:
         run: |
           git add --all
           if [-z "$(git status --porcelain)"]; then
+            echo "nothing changed"
             echo "::set-output name=PUSH::false"
           else
+            echo "trying to commit"
             git commit -m "auto push from workflow run"
             echo "::set-output name=PUSH::true"
           fi
