@@ -3,50 +3,44 @@ on: [push]
 jobs:
   fiddle-job:
     runs-on: ubuntu-latest
-    env:
-      SOMEVAR: true
-      NPM_FOLDER: npm
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
           registry-url: https://registry.npmjs.org/
-      - name: check if npm folder exists
+      - name: set env vars
+        id: localenv
+        run: |
+          BRANCH=$(git branch --show-current)
+          echo "::set-output name=branch::$BRANCH"
+          if [[ $BRANCH == 'master' ]]; then
+            echo "we are on MASTER branch"
+            echo "::set-output name=STAGE::prod"
+            echo "PUBLISH_ENDPOINT=${{ env.PROD_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
+          else 
+            echo "we are on DEV branch"
+            echo "::set-output name=STAGE::dev"
+            echo "PUBLISH_ENDPOINT=${{ env.DEV_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
+          fi
+      - name: set npm exists
+        id: npm
         run: |
           if test -e "${{ env.NPM_FOLDER }}"; then
-            echo "NPM_EXISTS=true" >> $GITHUB_ENV
             echo "npm folder exists"
+            echo "::set-output name=EXISTS::true"
           else
-            echo "NPM_EXISTS=false" >> $GITHUB_ENV
             echo "no npm folder here"
+            echo "::set-output name=EXISTS::false"
           fi
-      - name: reading new env var only in a next step
-        run: echo "the flag is ${{ env.NPM_EXISTS }}"
-      - name: set env vars for deployment
+      - name: Read package.json
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./package.json
+      - name: PRINt stuff
         run: |
-          if [[ ${{ github.ref }} =~ '/dev' ]]; then
-            echo "we are on DEV branch"
-            echo "DEPLOY=true" >> $GITHUB_ENV
-            echo "STAGE=dev" >> $GITHUB_ENV
-            echo "PUBLISH_ENDPOINT=${{ env.DEV_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
-          else 
-            if [[ ${{ github.ref }} =~ '/master' ]]; then
-              echo "we are on MASTER branch"
-              echo "DEPLOY=true" >> $GITHUB_ENV
-              echo "STAGE=prod" >> $GITHUB_ENV
-              echo "PUBLISH_ENDPOINT=${{ env.PROD_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
-            else
-              echo "we are on another branch"
-              echo "DEPLOY=false" >> $GITHUB_ENV
-            fi
-          fi
-      - name: bump npm patch version and publish
-        if: (env.NPM_EXISTS && env.DEPLOY)
-        env:
-          NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
-        run: |
-          cd npm
-          npm version patch
-          npm publish
+          STAGE=${{ steps.localenv.outputs.STAGE }}
+          echo ${{ steps.npm.outputs.EXISTS }}
+          echo $STAGE
+          echo ${{ steps.package.outputs.content }}
