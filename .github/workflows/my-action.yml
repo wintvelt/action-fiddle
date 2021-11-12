@@ -41,4 +41,4 @@ jobs:
           STAGE=${{ steps.localenv.outputs.STAGE }}
           echo ${{ steps.npm.outputs.EXISTS }}
           echo $STAGE
-          echo ${{ steps.package.outputs.content }}
+          echo ${{ steps.package.outputs.content.name }}
