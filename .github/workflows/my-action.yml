@@ -56,7 +56,7 @@ jobs:
           echo ${{ steps.npm.outputs.EXISTS }}
           echo $STAGE
           echo $(basename -s .git $(git remote get-url origin))
-          git branch
+          echo ${{ github.ref }}
       - name: Add all changes and check if we need to commit files
         id: commit
         shell: bash
@@ -74,6 +74,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
       - name: Create pull request
         if: steps.commit.outputs.PUSH == 'true'
         uses: repo-sync/pull-request@v2
