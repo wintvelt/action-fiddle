@@ -17,11 +17,9 @@ jobs:
           if [[ $BRANCH == 'master' ]]; then
             echo "we are on MASTER branch"
             echo "::set-output name=STAGE::prod"
-            echo "PUBLISH_ENDPOINT=${{ env.PROD_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
           else 
             echo "we are on DEV branch"
             echo "::set-output name=STAGE::dev"
-            echo "PUBLISH_ENDPOINT=${{ env.DEV_PUBLISH_ENDPOINT }}" >> $GITHUB_ENV
           fi
       - name: set npm exists
         id: npm
@@ -38,7 +36,7 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./package.json
-      - name: PRINt stuff
+      - name: PRINT stuff
         run: |
           STAGE=${{ steps.localenv.outputs.STAGE }}
           echo ${{ steps.npm.outputs.EXISTS }}
