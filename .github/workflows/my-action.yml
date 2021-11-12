@@ -44,6 +44,7 @@ jobs:
           echo $(basename -s .git $(git remote get-url origin))
       - name: Add all changes and check if we need to commit files
         id: commit
+        shell: bash
         run: |
           echo "dinges" > myfile.txt
           git config --local user.email "action@github.com"
