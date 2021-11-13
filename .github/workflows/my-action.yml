@@ -4,8 +4,9 @@ on:
     branches:
       - master
       - dev
-    paths-ignore:
+    paths-ignore: # if only npm stack-output or package changed, we can ignore this update
       - 'npm/*-stack-output.json'
+      - 'npm/package.json'
 jobs:
   fiddle-job:
     runs-on: ubuntu-latest
@@ -51,10 +52,10 @@ jobs:
           echo "::set-output name=HOTFIX_BRANCH::$HOTFIX_BRANCH"
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
+          git show-ref
           if git show-ref --quiet refs/remotes/origin/$HOTFIX_BRANCH; then
             echo "found and deleted remote hotfix branch"
-            git checkout $HOTFIX_BRANCH
-            git merge $BRANCH -m "auto merge from deploy workflow"
+            git push origin --delete $HOTFIX_BRANCH
           fi
           if git show-ref --quiet refs/heads/$HOTFIX_BRANCH; then
             echo "did find hotfix branch"
