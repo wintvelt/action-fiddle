@@ -6,7 +6,7 @@ on:
       - 'npm/package.json'
 jobs:
   fiddle-job:
-    if: (${{ github.ref == 'refs/heads/master' }} || ${{ github.ref == 'refs/heads/dev' }})
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
