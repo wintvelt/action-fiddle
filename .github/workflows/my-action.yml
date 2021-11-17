@@ -40,7 +40,7 @@ jobs:
         with:
           url: ${{ env.DEV_PUBLISH_ENDPOINT }}
           method: PUT
-          headers: '{ "Content-Type": "application/json", "Authorization": "Basic the-most-important-Th!ng-in-life-is-2-not-take-yourself-2oo-Seriously" }'
+          headers: '{ "Content-Type": "application/json", "Authorization": "Basic [SECRET]" }'
           body: '{ 
             "ownerName": "${{ github.repository }}", 
             "stage": "dev", 
