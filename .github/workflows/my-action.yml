@@ -9,6 +9,7 @@ on:
       - 'npm/package.json'
 jobs:
   fiddle-job:
+    if: ${{ github.ref == 'refs/heads/master' }} || ${{ github.ref == 'refs/heads/dev' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -28,79 +29,9 @@ jobs:
             echo "we are on DEV branch"
             echo "::set-output name=STAGE::dev"
           fi
-      - name: set npm exists
-        id: npm
-        run: |
-          if test -e "${{ env.NPM_FOLDER }}"; then
-            echo "npm folder exists"
-            echo "::set-output name=EXISTS::true"
-          else
-            echo "no npm folder here"
-            echo "::set-output name=EXISTS::false"
-          fi
-      - name: Read package.json
-        id: package
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./package.json
-      - name: switch to hotfix branch
-        id: branch
-        run: |
-          BRANCH=$(git branch --show-current)
-          HOTFIX_BRANCH=$BRANCH-workflow-auto-hotfix
-          echo "::set-output name=BRANCH::$BRANCH"
-          echo "::set-output name=HOTFIX_BRANCH::$HOTFIX_BRANCH"
-          git config --local user.email "action@github.com"
-          git config --local user.name "github-actions"
-          git show-ref
-          if git show-ref --quiet refs/remotes/origin/$HOTFIX_BRANCH; then
-            echo "found and deleted remote hotfix branch"
-            git push origin --delete $HOTFIX_BRANCH
-          fi
-          if git show-ref --quiet refs/heads/$HOTFIX_BRANCH; then
-            echo "did find hotfix branch"
-            git checkout $HOTFIX_BRANCH
-            git merge $BRANCH -m "auto merge from deploy workflow"
-          else
-            echo "did not find hotfix branch"
-            git checkout -b $HOTFIX_BRANCH
-          fi
-          git branch
-      - name: PRINT stuff out
-        run: |
-          STAGE=${{ steps.localenv.outputs.STAGE }}
-          echo ${{ steps.npm.outputs.EXISTS }}
-          echo $STAGE
-          echo $(basename -s .git $(git remote get-url origin))
-          echo ${{ steps.branch.outputs.HOTFIX_BRANCH }}
-      - name: Add all changes and check if we need to commit files
-        id: commit
-        shell: bash
-        run: |
-          git add --all
-          if [[ -z "$(git status --porcelain)" ]]; then
-            echo "nothing changed"
-            echo "::set-output name=PUSH::false"
-          else
-            echo "trying to commit"
-            git commit -m "auto push from workflow run"
-            echo "::set-output name=PUSH::true"
-          fi
-      - name: Push changes out
-        if: steps.commit.outputs.PUSH == 'true'
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.branch.outputs.HOTFIX_BRANCH }}
-      - name: Create pull request
-        if: steps.commit.outputs.PUSH == 'true'
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: ${{ steps.branch.outputs.HOTFIX_BRANCH }}
-          destination_branch: ${{ steps.commit.outputs.BRANCH }}
-          pr_title: "Add stack output to npm folder for ${{ steps.branch.outputs.BRANCH }} branch"
-          pr_body: ":crown: *An automated PR*"
-          pr_label: "auto-pr"
-          pr_draft: false
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
+  next-job:
+    needs: fiddle-job
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "we are here!"
