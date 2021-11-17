@@ -8,6 +8,8 @@ jobs:
   fiddle-job:
     if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
     runs-on: ubuntu-latest
+    env:
+      DEV_PUBLISH_ENDPOINT: https://6klsawe709.execute-api.eu-central-1.amazonaws.com
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -27,6 +29,24 @@ jobs:
             echo "we are on DEV branch"
             echo "::set-output name=STAGE::dev"
           fi
+      - name: Read package.json
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./package.json
+
+      - name: Publish dependencies
+        uses: indiesdev/curl@v1
+        with:
+          url: ${{ env.DEV_PUBLISH_ENDPOINT }}
+          method: PUT
+          headers: '{ "Content-Type": "application/json", "Authorization": "Basic the-most-important-Th!ng-in-life-is-2-not-take-yourself-2oo-Seriously" }'
+          body: '{ 
+            "ownerName": "${{ github.repository }}", 
+            "stage": "dev", 
+            "pack": ${{ steps.package.outputs.content }}
+            }'
+          timeout: 5000
   next-job:
     needs: fiddle-job
     runs-on: ubuntu-latest
