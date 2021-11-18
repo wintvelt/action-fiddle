@@ -5,8 +5,7 @@ on:
       - 'npm/*-stack-output.json'
       - 'npm/package.json'
 jobs:
-  check-secrets:
-    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
+  check-secrets and branch:
     runs-on: ubuntu-latest
     outputs:
       something: ${{ steps.step1.outputs.EXIST }}
@@ -21,7 +20,7 @@ jobs:
           
   fiddle-job:
     needs: check-secrets
-    if: (needs.check-secrets.outputs.something == 'yes')
+    if: (needs.check-secrets.outputs.something == 'yes') && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
     runs-on: ubuntu-latest
     env:
       DEV_PUBLISH_ENDPOINT: https://6klsawe709.execute-api.eu-central-1.amazonaws.com
