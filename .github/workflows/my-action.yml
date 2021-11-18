@@ -1,7 +1,7 @@
 name: fiddle
 on: 
   push:
-    paths-ignore: # ignore if only npm stack-output or package changed
+    paths-ignore: # ignore if only npm stuff changed
       - 'npm/*-stack-output.json'
       - 'npm/package.json'
 jobs:
