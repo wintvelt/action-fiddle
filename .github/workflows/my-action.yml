@@ -5,7 +5,7 @@ on:
       - 'npm/*-stack-output.json'
       - 'npm/package.json'
 jobs:
-  check-secrets and branch:
+  check-secrets:
     runs-on: ubuntu-latest
     outputs:
       something: ${{ steps.step1.outputs.EXIST }}
