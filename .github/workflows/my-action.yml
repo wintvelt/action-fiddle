@@ -14,7 +14,8 @@ jobs:
       MY_SECRET: ${{ secrets.MY_SECRET}}
     steps:
       - id: step1
-        run: echo "::set-output name=EXIST::NOPE"
+        if: (env.MY_SECRET)
+        run: echo "::set-output name=EXIST::yes"
       - run: echo "${{ steps.step1.outputs.EXIST }}"
           
   fiddle-job:
