@@ -5,10 +5,23 @@ on:
       - 'npm/*-stack-output.json'
       - 'npm/package.json'
 jobs:
+  check-secrets:
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
+    runs-on: ubuntu-latest
+    outputs:
+      exist: ${{ steps.step1.outputs.exist }}
+    env:
+      MY_SECRET: ${{ secrets.MY_SECRET}}
+    steps:
+      - id: step1
+        if: ${{ env.MY_SECRET }}
+        run: echo "::set-output name=test::yes"
+          
   fiddle-job:
+    needs: check-secrets
     if: |
       (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
-      && (${{ secrets.MY_SECRET }})
+      && ${{ needs.check-secrets.outputs.exist }}
     runs-on: ubuntu-latest
     env:
       DEV_PUBLISH_ENDPOINT: https://6klsawe709.execute-api.eu-central-1.amazonaws.com
