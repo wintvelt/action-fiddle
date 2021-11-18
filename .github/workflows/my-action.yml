@@ -21,7 +21,7 @@ jobs:
           
   fiddle-job:
     needs: check-secrets
-    if: (needs.check-secrets.outputs.EXIST == 'yes')
+    if: (needs.check-secrets.outputs.something == 'yes')
     runs-on: ubuntu-latest
     env:
       DEV_PUBLISH_ENDPOINT: https://6klsawe709.execute-api.eu-central-1.amazonaws.com
