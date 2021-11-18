@@ -19,9 +19,7 @@ jobs:
           
   fiddle-job:
     needs: check-secrets
-    if: |
-      (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
-      && (${{ needs.check-secrets.outputs.exist }} == 'yes')
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') && (${{ needs.check-secrets.outputs.exist }} == 'yes')
     runs-on: ubuntu-latest
     env:
       DEV_PUBLISH_ENDPOINT: https://6klsawe709.execute-api.eu-central-1.amazonaws.com
