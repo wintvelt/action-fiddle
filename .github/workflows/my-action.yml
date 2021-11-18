@@ -15,7 +15,7 @@ jobs:
     steps:
       - id: step1
         if: ${{ env.MY_SECRET }}
-        run: echo "::set-output name=test::yes"
+        run: echo "::set-output name=exist::yes"
           
   fiddle-job:
     needs: check-secrets
@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: '16'
           registry-url: https://registry.npmjs.org/
-      - run: echo "${{ github.ref }}"
+      - run: echo "output was '${{ needs.check-secrets.outputs.exist }}'"
       - name: set env vars
         id: localenv
         run: |
