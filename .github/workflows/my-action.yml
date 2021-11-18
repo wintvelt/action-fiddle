@@ -9,19 +9,19 @@ jobs:
     if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
     runs-on: ubuntu-latest
     outputs:
-      exist: ${{ steps.step1.outputs.exist }}
+      something: ${{ steps.step1.outputs.EXIST }}
     env:
       MY_SECRET: ${{ secrets.MY_SECRET}}
     steps:
-      - run: echo "::set-output name=exist::NO"
+      - run: echo "::set-output name=EXIST::NO"
       - id: step1
         if: ${{ env.MY_SECRET }}
-        run: echo "::set-output name=exist::yes"
-      - run: echo "${{ steps.steps1.outputs.exist }}"
+        run: echo "::set-output name=EXIST::yes"
+      - run: echo "${{ steps.step1.outputs.exist }}"
           
   fiddle-job:
     needs: check-secrets
-    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') && (${{ needs.check-secrets.outputs.exist }} == 'yes')
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') && (${{ needs.check-secrets.outputs.EXIST }} == 'yes')
     runs-on: ubuntu-latest
     env:
       DEV_PUBLISH_ENDPOINT: https://6klsawe709.execute-api.eu-central-1.amazonaws.com
@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: '16'
           registry-url: https://registry.npmjs.org/
-      - run: echo "output was '${{ needs.check-secrets.outputs.exist }}'"
+      - run: echo "output was '${{ needs.check-secrets.outputs.something }}'"
       - name: set env vars
         id: localenv
         run: |
