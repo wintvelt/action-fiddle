@@ -6,7 +6,9 @@ on:
       - 'npm/package.json'
 jobs:
   fiddle-job:
-    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
+    if: |
+      (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
+      && (secrets.MY_SECRET)
     runs-on: ubuntu-latest
     env:
       DEV_PUBLISH_ENDPOINT: https://6klsawe709.execute-api.eu-central-1.amazonaws.com
@@ -35,18 +37,6 @@ jobs:
         with:
           path: ./package.json
 
-      - name: Publish dependencies
-        uses: indiesdev/curl@v1
-        with:
-          url: ${{ env.DEV_PUBLISH_ENDPOINT }}
-          method: PUT
-          headers: '{ "Content-Type": "application/json", "Authorization": "Basic [SECRET]" }'
-          body: '{ 
-            "ownerName": "${{ github.repository }}", 
-            "stage": "dev", 
-            "pack": ${{ steps.package.outputs.content }}
-            }'
-          timeout: 5000
   next-job:
     needs: fiddle-job
     runs-on: ubuntu-latest
